@@ -1,12 +1,5 @@
 #include "Functions.h"
 
-extern EventQueue* eq;
-extern ReadyQueue* rq;
-extern ProcessList* processes;
-extern float* clock;
-extern int* cpu_status;
-extern int* counter;
-
 int argChecks(int argc, char* argv[])
 {
     int flag = 0;
@@ -52,7 +45,7 @@ void argChecktoConsole(int flag)
     // No output for other flags
 }
 
-void handle_arrival(Event* event)
+void handle_arrival(Event* event, ProcessList* processes)
 {
     Process* currentProcess = event->getEventProcess();
 
@@ -72,7 +65,7 @@ void handle_arrival(Event* event)
     eq->scheduleEvent(newArrival);
 }
 
-void handle_departure (Event* event)
+void handle_departure (Event* event, ProcessList* processes)
 {
     if (rq->isEmpty())
     {
@@ -88,7 +81,7 @@ void handle_departure (Event* event)
 }
 
 
-bool tick(Event* event)
+bool tick(Event* event, ProcessList* processes)
 {
     bool queueEmpty = false;
     Event* event = eq->getEvent();
@@ -101,11 +94,11 @@ bool tick(Event* event)
     {
         if (event->getEventType() == "arrival")
         {
-            handle_arrival(event);
+            handle_arrival(event, processes);
         }
         else if (event->getEventType() == "departure")
         {
-            handle_departure(event);
+            handle_departure(event, processes);
         }
     }
     
