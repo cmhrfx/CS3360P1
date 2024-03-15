@@ -21,3 +21,8 @@ bool ReadyQueue::isEmpty()
 {
     return queue.empty();
 }
+
+int ReadyQueue::size()
+{
+    return queue.size();
+}

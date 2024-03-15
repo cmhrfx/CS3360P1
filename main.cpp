@@ -19,8 +19,17 @@ to the Ready Queue.
 Furthermore, each clock tick will be used to determine if an event in the
 Ready Queue should be introduced to the Event Queue.
 */
-
 #include "main.h"
+
+// Declaring some global variables for externalization
+float* clock = new float(0);            // global clock
+int* cpu_status = new int(0);           // 0 = not busy, 1 = busy
+int* sample_queue = new int(0);         // x += number of processes in rq
+int* sample_polls = new int(0);         // track number of polls
+ReadyQueue* rq = new ReadyQueue();      // instantiated as empty
+EventQueue* eq = new EventQueue();      // instantiated with 1 initial departure event
+bool* exit = new bool(false);           // exit flag tripped when eq is empty
+
 
 int main(int argc, char *argv[])
 {
@@ -29,15 +38,11 @@ int main(int argc, char *argv[])
     // This way, I don't need to nest the entire driver logic under 
     // "if (argFailure != 0)"
 
-    // Checking that the appropriate number and type of arguments are made.
-    int flag = argChecks(argc, argv);
-    // Generates console output to communicate bad argument occurrence
-    argChecktoConsole(flag);
+    int flag = argChecks(argc, argv);   // check for correct number of args
 
-    // Ends program early if a bad argument occurred.
     if (flag > 0)
     {
-        return 1;
+        return 1;                   // Ends program early if a bad argument occurred.
     }
 
     // ######################################################################
@@ -47,17 +52,14 @@ int main(int argc, char *argv[])
     float arrivalLambda = std::stof(argv[1]);
     float serviceLambda = std::stof(argv[2]);
 
-    // instantiate main driver variables
-    float* clock = new float(0);
-    int* cpu_status = new int(0);
-    ReadyQueue* rq = new ReadyQueue();
-    EventQueue* eq = new EventQueue();
-    bool exit = false;
-  
+    // instantiate all 1000 processes into a list
     ProcessList processes(arrivalLambda, serviceLambda);
-    // for testing during development
-    // processes.listToConsole();
+    // processes.listToConsole();   // for testing during development
 
+    while (!exit)
+    {
+
+    }
 
 
 

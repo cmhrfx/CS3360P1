@@ -10,6 +10,7 @@ public:
     void addProcess(Process* newProcess);
     Process* popFront();
     bool isEmpty();
+    int size();
     
 private:
     std::list<Process*> queue;

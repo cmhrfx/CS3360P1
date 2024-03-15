@@ -2,9 +2,9 @@
 
 EventQueue::EventQueue()
 {
-    Process* initiateP = new Process(0,0,0);
-    Event* initiateE = new Event(initiateP,0,"arrival");
-    events.push_back(initiateE);
+    Process* initiationProcess = new Process(0,0,0);
+    Event* initiationEvent = new Event(initiationProcess,0,"arrival");
+    events.push_back(initiationEvent);
 };
 
 void EventQueue::scheduleEvent(Event* event)

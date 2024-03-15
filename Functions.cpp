@@ -25,6 +25,9 @@ int argChecks(int argc, char* argv[])
             flag = 3;
         }
     }
+
+    argChecktoConsole(flag);
+
     return flag;
 }
 
@@ -49,19 +52,22 @@ void handle_arrival(Event* event, ProcessList* processes)
 {
     Process* currentProcess = event->getEventProcess();
 
-    if (*cpu_status == 0)
+    if (*cpu_status == 0 && event->getEventProcessId() != 0)
     {
         *cpu_status = 1;
         float interval = currentProcess->getServiceTime() + *clock;
         Event* newDeparture = new Event(currentProcess, interval, "departure");
         eq->scheduleEvent(newDeparture);
     }
-    else
+    else if (event->getEventProcessId() != 0)
     {
         rq->addProcess(currentProcess);
     }
     Process* nextProcess = processes->getProcess(*counter);
     Event* newArrival = new Event(nextProcess, nextProcess->getArrivalTime(), "arrival");
+    Process* pollProcess = new Process(-1, 0, 0);
+    Event* newPoll = new Event(pollProcess, 0, "poll");
+    eq->scheduleEvent(newPoll);
     eq->scheduleEvent(newArrival);
 }
 
@@ -80,15 +86,20 @@ void handle_departure (Event* event, ProcessList* processes)
     }
 }
 
-
-bool tick(Event* event, ProcessList* processes)
+void handle_poll (Event* event, ProcessList* processes)
 {
-    bool queueEmpty = false;
+    *sample_queue += rq->size();
+    *sample_polls += 1;
+}
+
+
+void tick(Event* event, ProcessList* processes)
+{
     Event* event = eq->getEvent();
     
     if (event == nullptr)
     {
-        queueEmpty = true;
+        *exit = true;
     }
     else
     {
@@ -99,6 +110,10 @@ bool tick(Event* event, ProcessList* processes)
         else if (event->getEventType() == "departure")
         {
             handle_departure(event, processes);
+        }
+        else if (event->getEventType() == "poll")
+        {
+            handle_poll(event, processes);
         }
     }
     
