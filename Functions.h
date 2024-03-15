@@ -8,13 +8,20 @@
 #include "EventQueue.h"
 #include "ReadyQueue.h"
 
+extern EventQueue* eq;
+extern ReadyQueue* rq;
+extern ProcessList* processes;
+extern float* clock;
+extern int* cpu_status;
+extern int* counter;
+
 using std::string;
 
 int argChecks(int argc, char *argv[]);
 void argChecktoConsole(int flag);
-void handleArrival(EventQueue* eq, ReadyQueue* rq, Event* event, float* clock, int cpu_status);
-void handleDeparture(EventQueue* eq, ReadyQueue* rq, Event* event, float* clock, int cpu_status);
-bool tick(EventQueue* eq, ReadyQueue* rq, Event* event, int counter, float* clock, int cpu_status);
+void handle_arrival(Event* event);
+void handle_departure(Event* event);
+bool tick(Event* event);
 
 
 #endif

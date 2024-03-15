@@ -47,18 +47,18 @@ int main(int argc, char *argv[])
     float arrivalLambda = std::stof(argv[1]);
     float serviceLambda = std::stof(argv[2]);
 
-    // instantiate clock, ready queue, and CPU
-    float clock = 0;
-    float idleTime = 0;
-    bool cpu_busy = false;
+    // instantiate main driver variables
+    float* clock = new float(0);
+    int* cpu_status = new int(0);
+    ReadyQueue* rq = new ReadyQueue();
+    EventQueue* eq = new EventQueue();
     bool exit = false;
-    ReadyQueue rq;
-    EventQueue eq;
+  
     ProcessList processes(arrivalLambda, serviceLambda);
     // for testing during development
     // processes.listToConsole();
 
-    
+
 
 
     return 0;

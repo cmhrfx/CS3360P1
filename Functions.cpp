@@ -1,5 +1,12 @@
 #include "Functions.h"
 
+extern EventQueue* eq;
+extern ReadyQueue* rq;
+extern ProcessList* processes;
+extern float* clock;
+extern int* cpu_status;
+extern int* counter;
+
 int argChecks(int argc, char* argv[])
 {
     int flag = 0;
@@ -42,20 +49,46 @@ void argChecktoConsole(int flag)
     {
         std::cout << "Argument out of range. Please try again.";
     }
+    // No output for other flags
 }
 
-void handleArrival(EventQueue* eq, ReadyQueue* rq, Event* event, int cpu_status)
+void handle_arrival(Event* event)
 {
+    Process* currentProcess = event->getEventProcess();
 
+    if (*cpu_status == 0)
+    {
+        *cpu_status = 1;
+        float interval = currentProcess->getServiceTime() + *clock;
+        Event* newDeparture = new Event(currentProcess, interval, "departure");
+        eq->scheduleEvent(newDeparture);
+    }
+    else
+    {
+        rq->addProcess(currentProcess);
+    }
+    Process* nextProcess = processes->getProcess(*counter);
+    Event* newArrival = new Event(nextProcess, nextProcess->getArrivalTime(), "arrival");
+    eq->scheduleEvent(newArrival);
 }
 
-void handleDeparture(EventQueue* eq, ReadyQueue* rq, Event* event, int cpu_status)
+void handle_departure (Event* event)
 {
-    
+    if (rq->isEmpty())
+    {
+        *cpu_status = 0;
+    }
+    else
+    {
+        Process* currentProcess = rq->popFront();
+        float interval = currentProcess->getServiceTime() + *clock;
+        Event* newDeparture = new Event(currentProcess, interval, "departure");
+        eq->scheduleEvent(newDeparture);
+    }
 }
 
 
-bool tick(EventQueue* eq, ReadyQueue* rq, Event* event, int counter, float* clock, int cpu_status)
+bool tick(Event* event)
 {
     bool queueEmpty = false;
     Event* event = eq->getEvent();
@@ -68,7 +101,11 @@ bool tick(EventQueue* eq, ReadyQueue* rq, Event* event, int counter, float* cloc
     {
         if (event->getEventType() == "arrival")
         {
-            handle_arrival
+            handle_arrival(event);
+        }
+        else if (event->getEventType() == "departure")
+        {
+            handle_departure(event);
         }
     }
     

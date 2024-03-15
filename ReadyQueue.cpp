@@ -12,7 +12,9 @@ void ReadyQueue::addProcess(Process* newProcess)
 
 Process* ReadyQueue::popFront()
 {
+    Process* poppedProcess = queue.front();
     queue.pop_front();
+    return poppedProcess;
 }
 
 bool ReadyQueue::isEmpty()
