@@ -2,11 +2,12 @@
 
 EventQueue::EventQueue()
 {
+    Process* initiate = new Process(0,0,0);
     Event* initiate = new Event(0,0,"arrival");
     events.push_back(initiate);
 };
 
-void EventQueue::addEvent(Event* event)
+void EventQueue::scheduleEvent(Event* event)
 {
     events.push_back(event);
 }

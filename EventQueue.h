@@ -11,7 +11,7 @@ public:
     EventQueue();
     ~EventQueue();
     Event* getEvent();
-    void addEvent(Event* event);
+    void scheduleEvent(Event* event);
     
 
 private:

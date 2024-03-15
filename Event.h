@@ -2,6 +2,7 @@
 #define EVENT_H
 
 #include <string>
+#include "Process.h"
 
 using std::string;
 
@@ -9,13 +10,18 @@ using std::string;
 // 0 = departure, 1 = arrival
 class Event{
 public:
-    Event(int pid, float time, std::string type);
+    Event(Process* process, float time, std::string type);
+    Process* getEventProcess();
     float getEventTime() const;
-    int getEventProcessId() const;
     string getEventType() const;
 
+    int getEventProcessId() const;
+    float getEventProcessAT() const;
+    float getEventProcessST() const;
+
+
 private:
-    int pid;
+    Process* process;
     float time;
     string type;
 };
