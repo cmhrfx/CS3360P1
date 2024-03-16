@@ -54,9 +54,9 @@ int main(int argc, char *argv[])
     float arrivalLambda = std::stof(argv[1]);
     float serviceLambda = std::stof(argv[2]);
 
-    // instantiate all 1000 processes into a list
+    // instantiate all processes into a list
     ProcessList* processes = new ProcessList(arrivalLambda, serviceLambda);
-    // processes.listToConsole();   // for testing during development
+    processes->listToConsole();   // for testing during development
 
     bool complete = false;
     

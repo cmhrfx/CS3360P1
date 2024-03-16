@@ -1,7 +1,7 @@
 #include "ProcessList.h"
 
 int MAX_PL_LENGTH = 10000;
-int DEBUG_LENGTH = 100;
+int DEBUG_LENGTH = 2;
 
 
 // lambda is the rate of instances over a fixed length of time.
