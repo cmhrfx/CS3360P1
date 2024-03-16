@@ -76,7 +76,7 @@ void handle_arrival(Event* event, ProcessList* processes)
     if (*cpu_status == 0 && event->getEventProcessId() != 0)
     {
         *cpu_status = 1;
-        float interval = currentProcess->getServiceTime() + *clock;
+        float interval = currentProcess->getServiceTime() + *time_piece;
         Event* newDeparture = new Event(currentProcess, interval, "departure");
         eq->scheduleEvent(newDeparture);
     }
@@ -84,7 +84,7 @@ void handle_arrival(Event* event, ProcessList* processes)
     {
         rq->addProcess(currentProcess);
     }
-    Process* nextProcess = processes->getProcess(*counter);
+    Process* nextProcess = processes->getProcess(++(*counter));
     Event* newArrival = new Event(nextProcess, nextProcess->getArrivalTime(), "arrival");
     Process* pollProcess = new Process(-1, 0, 0);
     Event* newPoll = new Event(pollProcess, 0, "poll");
@@ -110,7 +110,7 @@ void handle_departure (Event* event, ProcessList* processes)
     else
     {
         Process* currentProcess = rq->popFront();
-        float interval = currentProcess->getServiceTime() + *clock;
+        float interval = currentProcess->getServiceTime() + *time_piece;
         Event* newDeparture = new Event(currentProcess, interval, "departure");
         eq->scheduleEvent(newDeparture);
     }

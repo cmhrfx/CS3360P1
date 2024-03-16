@@ -23,13 +23,13 @@ Ready Queue should be introduced to the Event Queue.
 #include "main.h"
 
 // Declaring some global variables for externalization
-float* clock = new float(0);            // global clock
+float* time_piece = new float(0);       // global clock
 int* cpu_status = new int(0);           // 0 = not busy, 1 = busy
 int* sample_queue = new int(0);         // x += number of processes in rq
 int* sample_polls = new int(0);         // track number of polls
+int* counter = new int(0);              // counter to tick through processes
 ReadyQueue* rq = new ReadyQueue();      // instantiated as empty
 EventQueue* eq = new EventQueue();      // instantiated with 1 initial departure event
-bool* exit = new bool(false);           // exit flag tripped when eq is empty
 bool debug = true;                      // turn on debugging output
 
 
@@ -58,10 +58,10 @@ int main(int argc, char *argv[])
     ProcessList* processes = new ProcessList(arrivalLambda, serviceLambda);
     // processes.listToConsole();   // for testing during development
 
-    // debug
+    bool complete = false;
     
 
-    while (!exit)
+    while (!complete)
     {
         // FKA "tick"
         Event* event = eq->getEvent();
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
                 {
                     cout << "event = nullptr";
                 }
-                *exit = true;
+                complete = true;
             }
         else
         {
@@ -100,6 +100,8 @@ int main(int argc, char *argv[])
             cout << event->getEventType() << endl;
         }
     }
+    
+
 
     return 0;
 }

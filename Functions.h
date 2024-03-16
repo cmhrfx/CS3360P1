@@ -14,12 +14,11 @@ using std::endl;
 
 extern EventQueue* eq;
 extern ReadyQueue* rq;
-extern float* clock;
+extern float* time_piece;
 extern int* cpu_status;
 extern int* counter;
 extern int* sample_queue;
 extern int* sample_polls;
-extern bool* exit;
 extern bool debug;
 
 int argChecks(int argc, char *argv[]);
