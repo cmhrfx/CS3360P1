@@ -30,6 +30,7 @@ int* sample_polls = new int(0);         // track number of polls
 ReadyQueue* rq = new ReadyQueue();      // instantiated as empty
 EventQueue* eq = new EventQueue();      // instantiated with 1 initial departure event
 bool* exit = new bool(false);           // exit flag tripped when eq is empty
+bool debug = true;                      // turn on debugging output
 
 
 int main(int argc, char *argv[])
@@ -58,7 +59,7 @@ int main(int argc, char *argv[])
     // processes.listToConsole();   // for testing during development
 
     // debug
-    bool debug = true;
+    
 
     while (!exit)
     {
@@ -66,13 +67,19 @@ int main(int argc, char *argv[])
         Event* event = eq->getEvent();
         if (debug)
         {
-            cout << "DEBUG 1 - after line 66" << endl;
+            cout << "Beginning tick" << endl;
             cout << event->getEventProcessId() << endl;
             cout << event->getEventTime() << endl;
             cout << event->getEventType() << endl;
         }
         if (event == nullptr)
-            {*exit = true;}
+            {
+                if (debug)
+                {
+                    cout << "event = nullptr";
+                }
+                *exit = true;
+            }
         else
         {
             if (event->getEventType() == "arrival")
@@ -84,9 +91,15 @@ int main(int argc, char *argv[])
             else if (event->getEventType() == "poll")
                 {handle_poll(event, processes);}
         }
+
+        if (debug)
+        {
+            cout << "Ending tick" << endl;
+            cout << event->getEventProcessId() << endl;
+            cout << event->getEventTime() << endl;
+            cout << event->getEventType() << endl;
+        }
     }
-
-
 
     return 0;
 }
