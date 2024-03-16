@@ -19,6 +19,7 @@ to the Ready Queue.
 Furthermore, each clock tick will be used to determine if an event in the
 Ready Queue should be introduced to the Event Queue.
 */
+
 #include "main.h"
 
 // Declaring some global variables for externalization
@@ -53,12 +54,36 @@ int main(int argc, char *argv[])
     float serviceLambda = std::stof(argv[2]);
 
     // instantiate all 1000 processes into a list
-    ProcessList processes(arrivalLambda, serviceLambda);
+    ProcessList* processes = new ProcessList(arrivalLambda, serviceLambda);
     // processes.listToConsole();   // for testing during development
+
+    // debug
+    bool debug = true;
 
     while (!exit)
     {
-
+        // FKA "tick"
+        Event* event = eq->getEvent();
+        if (debug)
+        {
+            cout << "DEBUG 1 - after line 66" << endl;
+            cout << event->getEventProcessId() << endl;
+            cout << event->getEventTime() << endl;
+            cout << event->getEventType() << endl;
+        }
+        if (event == nullptr)
+            {*exit = true;}
+        else
+        {
+            if (event->getEventType() == "arrival")
+                {handle_arrival(event, processes);}
+                
+            else if (event->getEventType() == "departure")
+                {handle_departure(event, processes);}
+                
+            else if (event->getEventType() == "poll")
+                {handle_poll(event, processes);}
+        }
     }
 
 

@@ -24,7 +24,7 @@ void argChecktoConsole(int flag);
 void handle_arrival(Event* event, ProcessList* processes);
 void handle_departure(Event* event, ProcessList* processes);
 void handle_poll(Event* event, ProcessList* processes);
-void tick(Event* event, ProcessList* processes);
+void tick(ProcessList* processes);
 
 
 #endif
