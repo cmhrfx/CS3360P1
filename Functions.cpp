@@ -85,7 +85,7 @@ void handleArrival(Event* event)
         core.rq.addProcess(currentProcess);
     }
     core.counter++;
-    Process* nextProcess = core.processes.getProcess(core.counter);
+    Process* nextProcess = core.processes.getProcess();
     Event* newArrival = new Event(nextProcess, nextProcess->getArrivalTime(), "arrival");
     Process* pollProcess = new Process(-1, 0, 0);
     Event* newPoll = new Event(pollProcess, 0, "poll");

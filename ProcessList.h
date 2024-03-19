@@ -17,7 +17,7 @@ public:
     ProcessList();
     ~ProcessList();
     void listToConsole();
-    Process* getProcess(int index);
+    Process* getProcess();
 
 private:
     std::list<Process*> processes;

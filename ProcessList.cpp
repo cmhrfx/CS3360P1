@@ -3,6 +3,16 @@
 int MAX_PL_LENGTH = 10000;
 int DEBUG_LENGTH = 2;
 
+// populate processList on instantiation
+ProcessList::ProcessList(float arrivalLambda, float serviceLambda)
+{
+    populateList(arrivalLambda, serviceLambda);
+}
+
+ProcessList::ProcessList()
+{
+    populateList(1,1);
+}
 
 // lambda is the rate of instances over a fixed length of time.
 // Thus, for arrivals, we can use the flat value (e.g. lambda = 10)
@@ -31,17 +41,6 @@ void ProcessList::populateList(float arrivalLambda, float serviceLambda)
     }
 }
 
-// populate processList on instantiation
-ProcessList::ProcessList(float arrivalLambda, float serviceLambda)
-{
-    populateList(arrivalLambda, serviceLambda);
-}
-
-ProcessList::ProcessList()
-{
-    populateList(1,1);
-}
-
 // Console output of ProcessList, made for testing during development
 void ProcessList::listToConsole()
 {
@@ -68,15 +67,17 @@ ProcessList::~ProcessList()
     }
 }
 
-Process* ProcessList::getProcess(int index)
+Process* ProcessList::getProcess()
 {
-    if (index < 0 || index >= processes.size())
+    Process* process = nullptr;
+    if (processes.empty())
     {
-        throw std::out_of_range("Index out of range");
+        std::cout << "No more processes" << std::endl;
+    }
+    else {
+        process = processes.front();
+        processes.pop_front();
     }
 
-    auto it = processes.begin();
-    std::advance(it, index);
-
-    return *it;
+    return process;
 }
