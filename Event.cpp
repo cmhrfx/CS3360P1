@@ -17,7 +17,6 @@ float Event::getEventTime() const
     return time;
 }
 
-
 string Event::getEventType() const
 {
     return type;

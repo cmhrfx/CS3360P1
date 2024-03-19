@@ -12,20 +12,14 @@ using std::string;
 using std::cout;
 using std::endl;
 
-extern EventQueue* eq;
-extern ReadyQueue* rq;
-extern float* time_piece;
-extern int* cpu_status;
-extern int* counter;
-extern int* sample_queue;
-extern int* sample_polls;
-extern bool debug;
+extern Core core;
+extern bool const DEBUG;
 
 int argChecks(int argc, char *argv[]);
 void argChecktoConsole(int flag);
-void handle_arrival(Event* event, ProcessList* processes);
-void handle_departure(Event* event, ProcessList* processes);
-void handle_poll(Event* event, ProcessList* processes);
+void handleArrival(Event* event, ProcessList* processes);
+void handleDeparture(Event* event, ProcessList* processes);
+void handlePoll(Event* event, ProcessList* processes);
 
 
 #endif

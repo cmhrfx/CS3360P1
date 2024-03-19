@@ -2,7 +2,7 @@
 
 int argChecks(int argc, char* argv[])
 {
-    if (debug)
+    if (DEBUG)
     {
         cout << "Running argchecks" << endl;
     }
@@ -32,7 +32,7 @@ int argChecks(int argc, char* argv[])
 
     argChecktoConsole(flag);
 
-    if (debug)
+    if (DEBUG)
     {
         cout << "Completed argchecks" << endl;
     }
@@ -41,7 +41,7 @@ int argChecks(int argc, char* argv[])
 
 void argChecktoConsole(int flag)
 {
-    if (debug)
+    if (DEBUG)
     {
         cout << "Running argChecktoConsole" << endl;
     }
@@ -59,77 +59,77 @@ void argChecktoConsole(int flag)
     }
     // No output for other flags
 
-    if (debug)
+    if (DEBUG)
     {
         cout << "Completed argChecktoConsole" << endl;
     }
 }
 
-void handle_arrival(Event* event, ProcessList* processes)
+void handleArrival(Event* event, ProcessList* processes)
 {
-    if (debug)
+    if (DEBUG)
     {
         cout << "Running handle_arrival" << endl;
     }
     Process* currentProcess = event->getEventProcess();
 
-    if (*cpu_status == 0 && event->getEventProcessId() != 0)
+    if (core.cpu_status == 0 && event->getEventProcessId() != 0)
     {
-        *cpu_status = 1;
-        float interval = currentProcess->getServiceTime() + *time_piece;
+        core.cpu_status = 1;
+        float interval = currentProcess->getServiceTime() + core.time_piece;
         Event* newDeparture = new Event(currentProcess, interval, "departure");
-        eq->scheduleEvent(newDeparture);
+        core.eq.scheduleEvent(newDeparture);
     }
     else if (event->getEventProcessId() != 0)
     {
-        rq->addProcess(currentProcess);
+        core.rq.addProcess(currentProcess);
     }
-    Process* nextProcess = processes->getProcess(++(*counter));
+    Process* nextProcess = processes->getProcess(++(core.counter));
     Event* newArrival = new Event(nextProcess, nextProcess->getArrivalTime(), "arrival");
     Process* pollProcess = new Process(-1, 0, 0);
     Event* newPoll = new Event(pollProcess, 0, "poll");
-    eq->scheduleEvent(newPoll);
-    eq->scheduleEvent(newArrival);
+    core.eq.scheduleEvent(newPoll);
+    core.eq.scheduleEvent(newArrival);
 
-    if (debug)
+    if (DEBUG)
     {
         cout << "Completed handle_arrival" << endl;
     }
 }
 
-void handle_departure (Event* event, ProcessList* processes)
+void handleDeparture (Event* event, ProcessList* processes)
 {
-    if (debug)
+    if (DEBUG)
     {
         cout << "Running handle_departure" << endl;
     }
-    if (rq->isEmpty())
+    if (core.rq.isEmpty())
     {
-        *cpu_status = 0;
+        core.cpu_status = 0;
     }
     else
     {
-        Process* currentProcess = rq->popFront();
-        float interval = currentProcess->getServiceTime() + *time_piece;
+        Process* currentProcess = core.rq.popFront();
+        float interval = currentProcess->getServiceTime() + core.time_piece;
         Event* newDeparture = new Event(currentProcess, interval, "departure");
-        eq->scheduleEvent(newDeparture);
+        core.eq.scheduleEvent(newDeparture);
     }
 
-    if (debug)
+    if (DEBUG)
     {
         cout << "Completed handle_departure" << endl;
     }
 }
 
-void handle_poll (Event* event, ProcessList* processes)
+void handlePoll (Event* event, ProcessList* processes)
 {
-    if (debug)
+    if (DEBUG)
     {
         cout << "Running handle_poll" << endl;
     }
-    *sample_queue += rq->size();
-    *sample_polls += 1;
-    if (debug)
+    core.sample_queue += core.rq.size();
+    core.sample_polls += 1;
+    if (DEBUG)
     {
         cout << "Completed handle_poll" << endl;
     }

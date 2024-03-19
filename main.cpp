@@ -21,17 +21,9 @@ Ready Queue should be introduced to the Event Queue.
 */
 
 #include "main.h"
-
-// Declaring some global variables for externalization
-float* time_piece = new float(0);       // global clock
-int* cpu_status = new int(0);           // 0 = not busy, 1 = busy
-int* sample_queue = new int(0);         // x += number of processes in rq
-int* sample_polls = new int(0);         // track number of polls
-int* counter = new int(0);              // counter to tick through processes
-ReadyQueue* rq = new ReadyQueue();      // instantiated as empty
-EventQueue* eq = new EventQueue();      // instantiated with 1 initial departure event
-bool debug = true;                      // turn on debugging output
-
+// GLOBALS
+Core core;                                    // struct for global variables
+bool const DEBUG = true;                      // turn on debugging output
 
 int main(int argc, char *argv[])
 {
@@ -55,8 +47,9 @@ int main(int argc, char *argv[])
     float serviceLambda = std::stof(argv[2]);
 
     // instantiate all processes into a list
-    ProcessList* processes = new ProcessList(arrivalLambda, serviceLambda);
-    processes->listToConsole();   // for testing during development
+    ProcessList processes(arrivalLambda, serviceLambda);
+    processes.listToConsole();   // for testing during development
+    core.setProcessList(processes);
 
     bool complete = false;
     
@@ -65,7 +58,7 @@ int main(int argc, char *argv[])
     {
         // FKA "tick"
         Event* event = eq->getEvent();
-        if (debug)
+        if (DEBUG)
         {
             cout << "Beginning tick" << endl;
             cout << event->getEventProcessId() << endl;
@@ -74,7 +67,7 @@ int main(int argc, char *argv[])
         }
         if (event == nullptr)
             {
-                if (debug)
+                if (DEBUG)
                 {
                     cout << "event = nullptr";
                 }
@@ -83,16 +76,16 @@ int main(int argc, char *argv[])
         else
         {
             if (event->getEventType() == "arrival")
-                {handle_arrival(event, processes);}
+                {handleArrival(event, processes);}
                 
             else if (event->getEventType() == "departure")
-                {handle_departure(event, processes);}
+                {handleDeparture(event, processes);}
                 
             else if (event->getEventType() == "poll")
-                {handle_poll(event, processes);}
+                {handlePoll(event, processes);}
         }
 
-        if (debug)
+        if (DEBUG)
         {
             cout << "Ending tick" << endl;
             cout << event->getEventProcessId() << endl;
