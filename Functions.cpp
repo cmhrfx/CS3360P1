@@ -65,7 +65,7 @@ void argChecktoConsole(int flag)
     }
 }
 
-void handleArrival(Event* event, ProcessList* processes)
+void handleArrival(Event* event)
 {
     if (DEBUG)
     {
@@ -84,7 +84,7 @@ void handleArrival(Event* event, ProcessList* processes)
     {
         core.rq.addProcess(currentProcess);
     }
-    Process* nextProcess = processes->getProcess(++(core.counter));
+    Process* nextProcess = core.processes.getProcess(++(core.counter));
     Event* newArrival = new Event(nextProcess, nextProcess->getArrivalTime(), "arrival");
     Process* pollProcess = new Process(-1, 0, 0);
     Event* newPoll = new Event(pollProcess, 0, "poll");
@@ -97,7 +97,7 @@ void handleArrival(Event* event, ProcessList* processes)
     }
 }
 
-void handleDeparture (Event* event, ProcessList* processes)
+void handleDeparture (Event* event)
 {
     if (DEBUG)
     {
@@ -121,7 +121,7 @@ void handleDeparture (Event* event, ProcessList* processes)
     }
 }
 
-void handlePoll (Event* event, ProcessList* processes)
+void handlePoll (Event* event)
 {
     if (DEBUG)
     {

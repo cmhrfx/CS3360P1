@@ -17,9 +17,9 @@ extern bool const DEBUG;
 
 int argChecks(int argc, char *argv[]);
 void argChecktoConsole(int flag);
-void handleArrival(Event* event, ProcessList* processes);
-void handleDeparture(Event* event, ProcessList* processes);
-void handlePoll(Event* event, ProcessList* processes);
+void handleArrival(Event* event);
+void handleDeparture(Event* event);
+void handlePoll(Event* event);
 
 
 #endif

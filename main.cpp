@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     while (!complete)
     {
         // FKA "tick"
-        Event* event = eq->getEvent();
+        Event* event = core.eq.getEvent();
         if (DEBUG)
         {
             cout << "Beginning tick" << endl;
@@ -76,13 +76,13 @@ int main(int argc, char *argv[])
         else
         {
             if (event->getEventType() == "arrival")
-                {handleArrival(event, processes);}
+                {handleArrival(event);}
                 
             else if (event->getEventType() == "departure")
-                {handleDeparture(event, processes);}
+                {handleDeparture(event);}
                 
             else if (event->getEventType() == "poll")
-                {handlePoll(event, processes);}
+                {handlePoll(event);}
         }
 
         if (DEBUG)
