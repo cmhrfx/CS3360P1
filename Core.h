@@ -10,10 +10,11 @@ struct Core
     // properties
     float time_piece;          // global clock
     int cpu_status;            // 0 = not busy, 1 = busy
-    int sample_queue;          // x += number of processes in rq
-    int sample_polls;          // track number of polls
+    float sample_queue;          // x += number of processes in rq
+    float sample_polls;          // track number of polls
     int arrivals;              
     int departures;
+    int poll_period;
     bool complete;
     bool processes_empty;
     bool events_empty;

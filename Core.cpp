@@ -3,10 +3,11 @@
 Core::Core() {
     float time_piece = 0;       // global clock
     int cpu_status = 0;           // 0 = not busy, 1 = busy
-    int sample_queue = 0;         // x += number of processes in rq
-    int sample_polls = 0;         // track number of polls
+    float sample_queue = 0;         // x += number of processes in rq
+    float sample_polls = 0;         // track number of polls
     int arrivals = 0;              
     int departures = 0;
+    int poll_period = 0;
     bool complete = false;
     bool processes_empty = false;
     bool events_empty = false;

@@ -127,8 +127,14 @@ void handlePoll (Event* event)
     {
         cout << "Running handle_poll" << endl;
     }
-    core.sample_queue += core.rq.size();
-    core.sample_polls++;
+
+    core.poll_period++;
+
+    if(core.poll_period%5 == 1)
+    {
+        core.sample_queue += core.rq.size();
+        core.sample_polls++;
+    }
 
     if (DEBUG)
     {

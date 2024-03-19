@@ -23,8 +23,8 @@ Ready Queue should be introduced to the Event Queue.
 #include "main.h"
 // GLOBALS
 Core core;                                    // struct for global variables
-bool const DEBUG = true;                      // turn on debugging output
-int const LENGTH = 1000;
+bool const DEBUG = false;                      // turn on debugging output
+int const LENGTH = 10000;
 
 int main(int argc, char *argv[])
 {
@@ -54,8 +54,8 @@ int main(int argc, char *argv[])
     float arrivalLambda = 10;
     float serviceLambda = 0.04;
     ProcessList processes(arrivalLambda, serviceLambda);
-    processes.listToConsole();   // for testing during development
     core.processes = processes;    
+    // core.processes.listToConsole();
 
     while (!core.events_empty)
     {
@@ -102,8 +102,8 @@ int main(int argc, char *argv[])
     
     // post loop stats
     cout << "Number of polls: " << core.sample_polls << endl;
-    cout << "Number of arrivals: " << core.arrivals << endl;
-    cout << "Number of departures: " << core.departures << endl;
+    cout << "Number of arrivals: " << core.arrivals - 1<< endl;
+    cout << "Number of departures: " << core.departures - 1 << endl;
     cout << "Average queue length: " << core.sample_queue / core.sample_polls << endl;
 
     return 0;
