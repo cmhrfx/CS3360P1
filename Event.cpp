@@ -7,6 +7,13 @@ Event::Event(Process* process, float time, string type)
     this->type = type;
 };
 
+Event::Event()
+{
+    this->process = nullptr;
+    this->time = 0;
+    this->type = "";
+}
+
 Process* Event::getEventProcess()
 {
     return process;

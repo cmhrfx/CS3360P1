@@ -60,6 +60,9 @@ void handleArrival(Event* event)
         cout << "Running handle_arrival" << endl;
     }
 
+    Event* newArrival = new Event();
+    Event* newDeparture = new Event();
+
     core.arrivals++;
     Process* currentProcess = event->getEventProcess();
 
@@ -67,8 +70,8 @@ void handleArrival(Event* event)
     {
         core.cpu_status = 1;
         float interval = currentProcess->getServiceTime() + core.time_piece;
-        Event* newDeparture = new Event(currentProcess, interval, "departure");
-        core.eq.scheduleEvent(newDeparture);
+        newDeparture = new Event(currentProcess, interval, "departure");
+        core.eq.scheduleEvent(newDeparture, event);
     }
     else
     {
@@ -82,8 +85,8 @@ void handleArrival(Event* event)
     }
     else 
     {
-        Event* newArrival = new Event(nextProcess, nextProcess->getArrivalTime(), "arrival");
-        core.eq.scheduleEvent(newArrival);
+        newArrival = new Event(nextProcess, nextProcess->getArrivalTime(), "arrival");
+        core.eq.scheduleEvent(newArrival, newDeparture);
     }
     schedulePoll();
 

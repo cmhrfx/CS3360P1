@@ -11,9 +11,8 @@ public:
     EventQueue();
     ~EventQueue();
     Event* getEvent();
-    float getNextEventTime();
-    void scheduleEvent(Event* event);
-    
+    void scheduleEvent(Event* newEvent, Event* oldEvent);
+    void scheduleEvent(Event* newEvent);
 
 private:
     std::list<Event*> events;

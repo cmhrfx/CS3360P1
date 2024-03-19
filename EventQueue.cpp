@@ -7,17 +7,23 @@ EventQueue::EventQueue()
     events.push_back(initiationEvent);
 };
 
-void EventQueue::scheduleEvent(Event* event)
+void EventQueue::scheduleEvent(Event* newEvent, Event* oldEvent)
 {
-    if (event->getEventTime() >= getNextEventTime())
+    if (newEvent->getEventTime() >= oldEvent->getEventTime())
     {
-        events.push_back(event);
+        events.push_back(newEvent);
     }
     else
     {
-        events.push_front(event);
+        events.push_front(newEvent);
     }
     
+}
+
+// overloaded function for events that need to go next. Namely: pulled from RQ and poll events. 
+void EventQueue::scheduleEvent(Event* newEvent)
+{
+    events.push_front(newEvent);
 }
 
 Event* EventQueue::getEvent()
@@ -29,17 +35,6 @@ Event* EventQueue::getEvent()
         events.pop_front();
     }
     return event;
-}
-
-float EventQueue::getNextEventTime()
-{
-    if (!events.empty())
-    {
-        Event event = *events.front();
-        return event.getEventTime();
-    }
-    return 0;
-    
 }
 
 EventQueue::~EventQueue()

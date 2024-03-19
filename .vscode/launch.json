@@ -8,13 +8,13 @@
             "request": "launch",
             "program": "${workspaceFolder}\\main.exe",
             "symbolSearchPath": "C:\\Symbols;C:\\SymbolDir2",
-            "externalConsole": true,
+            "console": "internalConsole",
             "logging": {
               "moduleLoad": false,
               "trace": true
             },
             "visualizerFile": "${workspaceFolder}/my.natvis",
-            "args": ["10", "0.04"],
+            "args": ["Tee-Object", "${workspaceFolder}/log.txt"],
             "cwd": "${workspaceFolder}"
         }
     ]

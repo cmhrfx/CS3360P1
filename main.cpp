@@ -24,7 +24,7 @@ Ready Queue should be introduced to the Event Queue.
 // GLOBALS
 Core core;                                    // struct for global variables
 bool const DEBUG = true;                      // turn on debugging output
-int const LENGTH = 100;
+int const LENGTH = 1000;
 
 int main(int argc, char *argv[])
 {
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     float arrivalLambda = 10;
     float serviceLambda = 0.04;
     ProcessList processes(arrivalLambda, serviceLambda);
-    // processes.listToConsole();   // for testing during development
+    processes.listToConsole();   // for testing during development
     core.processes = processes;    
 
     while (!core.events_empty)
@@ -68,12 +68,14 @@ int main(int argc, char *argv[])
         else {
             core.time_piece = event->getEventTime();
 
-            if (DEBUG)
+            if (DEBUG && event->getEventType() != "poll")
             {
                 cout << "Beginning tick" << endl;
                 cout << "Event ProcessID: " << event->getEventProcessId() << endl;
                 cout << "Event Time: " << event->getEventTime() << endl;
                 cout << "Event Type: " << event->getEventType() << endl;
+                cout << "Event Process Arrival Time: " << event->getEventProcessAT() << endl;
+                cout << "Event Process Service Time: " << event->getEventProcessST() << endl;
             }
 
             if (event->getEventType() == "arrival")

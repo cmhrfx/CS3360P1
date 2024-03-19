@@ -11,6 +11,7 @@ using std::string;
 class Event{
 public:
     Event(Process* process, float time, std::string type);
+    Event();
     Process* getEventProcess();
     float getEventTime() const;
     string getEventType() const;
