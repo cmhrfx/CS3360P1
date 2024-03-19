@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     // This way, I don't need to nest the entire driver logic under 
     // "if (argFailure != 0)"
 
+    /*
     int flag = argChecks(argc, argv);   // check for correct number of args
 
     if (flag > 0)
@@ -46,7 +47,11 @@ int main(int argc, char *argv[])
     float arrivalLambda = std::stof(argv[1]);
     float serviceLambda = std::stof(argv[2]);
 
+    */
+
     // instantiate all processes into a list
+    float arrivalLambda = 10;
+    float serviceLambda = 0.04;
     ProcessList processes(arrivalLambda, serviceLambda);
     processes.listToConsole();   // for testing during development
     core.processes = processes;
@@ -57,13 +62,13 @@ int main(int argc, char *argv[])
     while (!complete)
     {
         // FKA "tick"
-        Event* event = core.eq->getEvent();
+        Event* event = core.eq.getEvent();
         if (DEBUG)
         {
             cout << "Beginning tick" << endl;
-            cout << event->getEventProcessId() << endl;
-            cout << event->getEventTime() << endl;
-            cout << event->getEventType() << endl;
+            cout << "Event ProcessID: " << event->getEventProcessId() << endl;
+            cout << "Event Time: " << event->getEventTime() << endl;
+            cout << "Event Type: " << event->getEventType() << endl;
         }
         if (event == nullptr)
             {
@@ -87,10 +92,10 @@ int main(int argc, char *argv[])
 
         if (DEBUG)
         {
+            cout << "Event Process Id: " << event->getEventProcessId() << endl;
+            cout << "Event Time: " << event->getEventTime() << endl;
+            cout << "Event Type: " << event->getEventType() << endl;
             cout << "Ending tick" << endl;
-            cout << event->getEventProcessId() << endl;
-            cout << event->getEventTime() << endl;
-            cout << event->getEventType() << endl;
         }
     }
     

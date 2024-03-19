@@ -39,9 +39,8 @@ ProcessList::ProcessList(float arrivalLambda, float serviceLambda)
 
 ProcessList::ProcessList()
 {
-    populateList(0,0);
+    populateList(1,1);
 }
-
 
 // Console output of ProcessList, made for testing during development
 void ProcessList::listToConsole()

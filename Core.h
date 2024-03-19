@@ -14,8 +14,8 @@ struct Core
     int sample_polls;          // track number of polls
     int counter;               // counter to tick through processes
     ProcessList processes;      // inserted after construction
-    ReadyQueue* rq;             // instantiated as empty
-    EventQueue* eq;             // instantiated with 1 initial departure event  
+    ReadyQueue rq;      // instantiated as empty
+    EventQueue eq;      // instantiated with 1 initial departure event  
 
     // methods
     Core();

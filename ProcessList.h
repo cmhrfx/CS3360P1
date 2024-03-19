@@ -13,8 +13,8 @@
 
 class ProcessList{
 public:
-    ProcessList();
     ProcessList(float arrivalLambda, float serviceLambda);
+    ProcessList();
     ~ProcessList();
     void listToConsole();
     Process* getProcess(int index);

@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations":[
+
+        {
+            "name": "C++ Launch (Windows)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\main.exe",
+            "symbolSearchPath": "C:\\Symbols;C:\\SymbolDir2",
+            "externalConsole": true,
+            "logging": {
+              "moduleLoad": false,
+              "trace": true
+            },
+            "visualizerFile": "${workspaceFolder}/my.natvis",
+            "args": ["10", "0.04"],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

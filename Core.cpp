@@ -8,5 +8,5 @@ Core::Core() {
     int counter = 0;              // counter to tick through processes
     ReadyQueue rq;      // instantiated as empty
     EventQueue eq;      // instantiated with 1 initial departure event
-    ProcessList pl(0,0);
+    ProcessList processes;
 };
