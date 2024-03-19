@@ -9,7 +9,15 @@ EventQueue::EventQueue()
 
 void EventQueue::scheduleEvent(Event* event)
 {
-    events.push_back(event);
+    if (event->getEventTime() >= getNextEventTime())
+    {
+        events.push_back(event);
+    }
+    else
+    {
+        events.push_front(event);
+    }
+    
 }
 
 Event* EventQueue::getEvent()
@@ -21,6 +29,17 @@ Event* EventQueue::getEvent()
         events.pop_front();
     }
     return event;
+}
+
+float EventQueue::getNextEventTime()
+{
+    if (!events.empty())
+    {
+        Event event = *events.front();
+        return event.getEventTime();
+    }
+    return 0;
+    
 }
 
 EventQueue::~EventQueue()

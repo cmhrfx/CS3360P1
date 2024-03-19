@@ -1,8 +1,5 @@
 #include "ProcessList.h"
 
-int MAX_PL_LENGTH = 10000;
-int DEBUG_LENGTH = 10;
-
 // populate processList on instantiation
 ProcessList::ProcessList(float arrivalLambda, float serviceLambda)
 {
@@ -32,7 +29,7 @@ void ProcessList::populateList(float arrivalLambda, float serviceLambda)
 {
     float generationTime = 0;
     srand(time(0));
-    for (int i = 0; i < DEBUG_LENGTH; i++)
+    for (int i = 0; i < LENGTH; i++)
     {
         float interArrivalTime = genExponentialRandom(arrivalLambda);
         generationTime += interArrivalTime;
@@ -61,10 +58,7 @@ void ProcessList::listToConsole()
 
 ProcessList::~ProcessList()
 {
-    for (auto& process : processes)
-    {
-        delete process;
-    }
+
 }
 
 Process* ProcessList::getProcess()

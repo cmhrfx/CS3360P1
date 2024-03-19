@@ -2,6 +2,7 @@
 #define PROCESS_H
 
 
+
 class Process{
 public:
     Process(int id, float arrivalTime, float serviceTime);

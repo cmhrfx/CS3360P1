@@ -42,27 +42,15 @@ int argChecks(int argc, char* argv[])
 void argChecktoConsole(int flag)
 {
     if (DEBUG)
-    {
-        cout << "Running argChecktoConsole" << endl;
-    }
+        {cout << "Running argChecktoConsole" << endl;}
     if (flag == 1)
-    {
-        std::cout << "Incorrect number of arguments. Please try again.\n";
-    }
+        {cout << "Incorrect number of arguments. Please try again.\n";}
     else if (flag == 2)
-    {
-        std::cout << "Incorrect type of argument. Please try again.\n";
-    }
+        {cout << "Incorrect type of argument. Please try again.\n";}
     else if (flag == 3)
-    {
-        std::cout << "Argument out of range. Please try again.\n";
-    }
-    // No output for other flags
-
+        {cout << "Argument out of range. Please try again.\n";}
     if (DEBUG)
-    {
-        cout << "Completed argChecktoConsole" << endl;
-    }
+        {cout << "Completed argChecktoConsole" << endl;}
 }
 
 void handleArrival(Event* event)
@@ -92,13 +80,12 @@ void handleArrival(Event* event)
     {
         core.processes_empty = true;
     }
-    else {
+    else 
+    {
         Event* newArrival = new Event(nextProcess, nextProcess->getArrivalTime(), "arrival");
-        Process* pollProcess = new Process(-1, 0, 0);
-        Event* newPoll = new Event(pollProcess, 0, "poll");
-        core.eq.scheduleEvent(newPoll);
         core.eq.scheduleEvent(newArrival);
     }
+    schedulePoll();
 
     if (DEBUG)
     {
@@ -144,4 +131,11 @@ void handlePoll (Event* event)
     {
         cout << "Completed handle_poll" << endl;
     }
+}
+
+void schedulePoll()
+{
+    Process* pollProcess = new Process(-1, 0, 0);
+    Event* newPoll = new Event(pollProcess, 0, "poll");
+    core.eq.scheduleEvent(newPoll);
 }

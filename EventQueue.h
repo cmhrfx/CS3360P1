@@ -11,6 +11,7 @@ public:
     EventQueue();
     ~EventQueue();
     Event* getEvent();
+    float getNextEventTime();
     void scheduleEvent(Event* event);
     
 

@@ -23,7 +23,8 @@ Ready Queue should be introduced to the Event Queue.
 #include "main.h"
 // GLOBALS
 Core core;                                    // struct for global variables
-bool const DEBUG = false;                      // turn on debugging output
+bool const DEBUG = true;                      // turn on debugging output
+int const LENGTH = 100;
 
 int main(int argc, char *argv[])
 {
@@ -53,7 +54,7 @@ int main(int argc, char *argv[])
     float arrivalLambda = 10;
     float serviceLambda = 0.04;
     ProcessList processes(arrivalLambda, serviceLambda);
-    processes.listToConsole();   // for testing during development
+    // processes.listToConsole();   // for testing during development
     core.processes = processes;    
 
     while (!core.events_empty)

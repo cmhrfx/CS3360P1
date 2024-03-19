@@ -11,6 +11,8 @@
 #include <iostream>
 #include <iomanip>
 
+extern const int LENGTH;
+
 class ProcessList{
 public:
     ProcessList(float arrivalLambda, float serviceLambda);
