@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     // instantiate all processes into a list
     ProcessList processes(arrivalLambda, serviceLambda);
     processes.listToConsole();   // for testing during development
-    core.setProcessList(processes);
+    core.processes = processes;
 
     bool complete = false;
     
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     while (!complete)
     {
         // FKA "tick"
-        Event* event = core.eq.getEvent();
+        Event* event = core.eq->getEvent();
         if (DEBUG)
         {
             cout << "Beginning tick" << endl;

@@ -78,18 +78,18 @@ void handleArrival(Event* event)
         core.cpu_status = 1;
         float interval = currentProcess->getServiceTime() + core.time_piece;
         Event* newDeparture = new Event(currentProcess, interval, "departure");
-        core.eq.scheduleEvent(newDeparture);
+        core.eq->scheduleEvent(newDeparture);
     }
     else if (event->getEventProcessId() != 0)
     {
-        core.rq.addProcess(currentProcess);
+        core.rq->addProcess(currentProcess);
     }
     Process* nextProcess = core.processes.getProcess(++(core.counter));
     Event* newArrival = new Event(nextProcess, nextProcess->getArrivalTime(), "arrival");
     Process* pollProcess = new Process(-1, 0, 0);
     Event* newPoll = new Event(pollProcess, 0, "poll");
-    core.eq.scheduleEvent(newPoll);
-    core.eq.scheduleEvent(newArrival);
+    core.eq->scheduleEvent(newPoll);
+    core.eq->scheduleEvent(newArrival);
 
     if (DEBUG)
     {
@@ -103,16 +103,16 @@ void handleDeparture (Event* event)
     {
         cout << "Running handle_departure" << endl;
     }
-    if (core.rq.isEmpty())
+    if (core.rq->isEmpty())
     {
         core.cpu_status = 0;
     }
     else
     {
-        Process* currentProcess = core.rq.popFront();
+        Process* currentProcess = core.rq->popFront();
         float interval = currentProcess->getServiceTime() + core.time_piece;
         Event* newDeparture = new Event(currentProcess, interval, "departure");
-        core.eq.scheduleEvent(newDeparture);
+        core.eq->scheduleEvent(newDeparture);
     }
 
     if (DEBUG)
@@ -127,7 +127,7 @@ void handlePoll (Event* event)
     {
         cout << "Running handle_poll" << endl;
     }
-    core.sample_queue += core.rq.size();
+    core.sample_queue += core.rq->size();
     core.sample_polls += 1;
     if (DEBUG)
     {

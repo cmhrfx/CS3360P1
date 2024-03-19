@@ -13,6 +13,7 @@
 
 class ProcessList{
 public:
+    ProcessList();
     ProcessList(float arrivalLambda, float serviceLambda);
     ~ProcessList();
     void listToConsole();

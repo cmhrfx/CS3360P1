@@ -4,9 +4,7 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
-#include "ProcessList.h"
-#include "EventQueue.h"
-#include "ReadyQueue.h"
+#include "Core.h"
 
 using std::string;
 using std::cout;
