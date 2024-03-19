@@ -1,7 +1,7 @@
 #include "ProcessList.h"
 
 int MAX_PL_LENGTH = 10000;
-int DEBUG_LENGTH = 2;
+int DEBUG_LENGTH = 10;
 
 // populate processList on instantiation
 ProcessList::ProcessList(float arrivalLambda, float serviceLambda)
@@ -80,4 +80,9 @@ Process* ProcessList::getProcess()
     }
 
     return process;
+}
+
+bool ProcessList::isEmpty()
+{
+    return processes.empty();
 }

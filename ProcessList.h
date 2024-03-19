@@ -18,6 +18,7 @@ public:
     ~ProcessList();
     void listToConsole();
     Process* getProcess();
+    bool isEmpty();
 
 private:
     std::list<Process*> processes;

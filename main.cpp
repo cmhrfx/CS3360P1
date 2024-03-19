@@ -23,7 +23,7 @@ Ready Queue should be introduced to the Event Queue.
 #include "main.h"
 // GLOBALS
 Core core;                                    // struct for global variables
-bool const DEBUG = true;                      // turn on debugging output
+bool const DEBUG = false;                      // turn on debugging output
 
 int main(int argc, char *argv[])
 {
@@ -54,32 +54,27 @@ int main(int argc, char *argv[])
     float serviceLambda = 0.04;
     ProcessList processes(arrivalLambda, serviceLambda);
     processes.listToConsole();   // for testing during development
-    core.processes = processes;
+    core.processes = processes;    
 
-    bool complete = false;
-    
-
-    while (!complete)
+    while (!core.events_empty)
     {
         // FKA "tick"
         Event* event = core.eq.getEvent();
-        if (DEBUG)
-        {
-            cout << "Beginning tick" << endl;
-            cout << "Event ProcessID: " << event->getEventProcessId() << endl;
-            cout << "Event Time: " << event->getEventTime() << endl;
-            cout << "Event Type: " << event->getEventType() << endl;
-        }
         if (event == nullptr)
-            {
-                if (DEBUG)
-                {
-                    cout << "event = nullptr";
-                }
-                complete = true;
-            }
-        else
         {
+            core.events_empty = true;
+        }
+        else {
+            core.time_piece = event->getEventTime();
+
+            if (DEBUG)
+            {
+                cout << "Beginning tick" << endl;
+                cout << "Event ProcessID: " << event->getEventProcessId() << endl;
+                cout << "Event Time: " << event->getEventTime() << endl;
+                cout << "Event Type: " << event->getEventType() << endl;
+            }
+
             if (event->getEventType() == "arrival")
                 {handleArrival(event);}
                 
@@ -89,7 +84,9 @@ int main(int argc, char *argv[])
             else if (event->getEventType() == "poll")
                 {handlePoll(event);}
         }
+        
 
+    /*
         if (DEBUG)
         {
             cout << "Event Process Id: " << event->getEventProcessId() << endl;
@@ -97,9 +94,14 @@ int main(int argc, char *argv[])
             cout << "Event Type: " << event->getEventType() << endl;
             cout << "Ending tick" << endl;
         }
+    */
     }
     
-
+    // post loop stats
+    cout << "Number of polls: " << core.sample_polls << endl;
+    cout << "Number of arrivals: " << core.arrivals << endl;
+    cout << "Number of departures: " << core.departures << endl;
+    cout << "Average queue length: " << core.sample_queue / core.sample_polls << endl;
 
     return 0;
 }

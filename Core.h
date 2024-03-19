@@ -12,7 +12,11 @@ struct Core
     int cpu_status;            // 0 = not busy, 1 = busy
     int sample_queue;          // x += number of processes in rq
     int sample_polls;          // track number of polls
-    int counter;               // counter to tick through processes
+    int arrivals;              
+    int departures;
+    bool complete;
+    bool processes_empty;
+    bool events_empty;
     ProcessList processes;      // inserted after construction
     ReadyQueue rq;      // instantiated as empty
     EventQueue eq;      // instantiated with 1 initial departure event  
