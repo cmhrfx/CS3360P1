@@ -11,6 +11,7 @@ EventQueue::EventQueue()
 };
 
 
+// pop front event from EventQueue
 Event* EventQueue::getEvent()
 {
     Event* event = nullptr;
@@ -22,6 +23,9 @@ Event* EventQueue::getEvent()
     return event;
 }
 
+// Insert event to EventQueue based on time
+// Iterates through event queue until time of event is greater
+// than time of previous event. Inserts at that location.
 void EventQueue::scheduleEvent(Event* newEvent)
 {
     if (events.empty() || newEvent->time < events.front()->time)
@@ -37,6 +41,7 @@ void EventQueue::scheduleEvent(Event* newEvent)
         events.insert(it, newEvent);
     }
 }
+
 
 EventQueue::~EventQueue()
 {

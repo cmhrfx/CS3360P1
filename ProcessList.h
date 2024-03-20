@@ -11,7 +11,7 @@
 #include <iostream>
 #include <iomanip>
 
-extern Core core;
+extern const float LENGTH;
 
 class ProcessList{
 public:

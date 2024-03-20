@@ -10,13 +10,13 @@ struct Core
 {
     // properties
     float time_piece;               // global clock
-    int cpu_status;                 // 0 = not busy, 1 = busy
     float sample_queue;             // x += number of processes in rq
     float sample_polls;             // track number of polls taken
     float turnarounds;              // each departure calculates ind. t time
                                     // then adds it to global var. Later avgd.
     float cpu_active_count;         // number of times cpu busy on poll
     float polling_interval;         // frequency of polling events
+    int cpu_status;                 // 0 = not busy, 1 = busy
     int arrivals;                   // number of arrival events
     int departures;                 // number of departure events
     bool processes_empty;           // if processList is empty

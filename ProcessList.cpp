@@ -29,7 +29,7 @@ void ProcessList::populateList(float arrivalRate, float serviceTime)
 {
     float generationTime = 0;
     srand(time(0));
-    for (int i = 0; i < core.LENGTH; i++)
+    for (int i = 0; i < LENGTH; i++)
     {
         float interArrivalTime = genExponentialRandom(arrivalRate);
         generationTime += interArrivalTime;
