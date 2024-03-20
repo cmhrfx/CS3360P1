@@ -84,9 +84,9 @@ int main(int argc, char *argv[])
     // output results in csv format
     if (outFileResults.is_open())
     {
-        outFileResults << "\n" << arrivalRate << "," << serviceTime << "," << (core.turnarounds / LENGTH)
+        outFileResults << arrivalRate << "," << serviceTime << "," << (core.turnarounds / LENGTH)
         << "," << (LENGTH / core.time_piece) << "," << (core.cpu_active_count / core.sample_polls)
-        << "," << (core.sample_queue / core.sample_polls);
+        << "," << (core.sample_queue / core.sample_polls) << endl;
         outFileResults.close();
     }
 
