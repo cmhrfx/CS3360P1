@@ -24,7 +24,7 @@ Ready Queue should be introduced to the Event Queue.
 // GLOBALS
 Core core;                                    // struct for global variables
 bool const DEBUG = true;                      // turn on debugging output
-int const LENGTH = 100;
+float const LENGTH = 100;
 
 int main(int argc, char *argv[])
 {
@@ -49,13 +49,14 @@ int main(int argc, char *argv[])
     float serviceLambda = std::stof(argv[2]);
 
     */
+    std::ofstream outFileResults("results.txt", std::ios::app);
 
     // instantiate all processes into a list
     float arrivalLambda = 10;
     float serviceLambda = 0.04;
     ProcessList processes(arrivalLambda, serviceLambda);
     core.processes = processes;    
-    // core.processes.listToConsole();
+    core.processes.listToConsole();
 
     while (!core.events_empty)
     {
@@ -97,6 +98,18 @@ int main(int argc, char *argv[])
     cout << "Average queue length: " << core.sample_queue / core.sample_polls << endl;
     cout << "Average turnaround time: " << core.turnarounds / LENGTH << endl;
     cout << "CPU Utilization: " << core.cpu_active_count / core.sample_polls << endl;
+    cout << "Average Throughput: " << LENGTH / core.time_piece << endl;
+
+    if (outFileResults.is_open())
+    {
+        outFileResults << "arrivalLambda, serviceLambda"
+        << "avgTurnaround, throughput, cpu util, avg rq" << endl;
+        
+        outFileResults << arrivalLambda << "," << serviceLambda << "," << (core.turnarounds / LENGTH)
+        << "," << (LENGTH / core.time_piece) << "," << (core.cpu_active_count / core.sample_polls)
+        << "," << (core.sample_queue / core.sample_polls);
+        outFileResults.close();
+    }
 
     return 0;
 }

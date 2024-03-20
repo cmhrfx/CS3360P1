@@ -100,14 +100,24 @@ void handleDeparture(Event* event)
         Event* newDeparture = new Event(currentProcess, interval, "departure");
         core.eq.scheduleEvent(newDeparture);
     }
+    core.turnarounds += event->time - event->getEventProcessAT();
 
 }
 
 void handlePoll(Event* event)
 {
-    core.sample_queue += core.rq.size();
-    core.sample_polls++;
-    Event* nextPoll = new Event(core.pollProcess, 
-                core.time_piece + core.polling_interval, "poll");
-    core.eq.scheduleEvent(nextPoll);
+    if (!core.processes_empty)
+    {
+        core.sample_queue += core.rq.size();
+        core.sample_polls++;
+        if (core.cpu_status == 1)
+        {
+            core.cpu_active_count++;
+        }
+        
+        Event* nextPoll = new Event(core.pollProcess, 
+        core.time_piece + core.polling_interval, "poll");
+        core.eq.scheduleEvent(nextPoll);
+    }
+
 }

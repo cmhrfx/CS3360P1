@@ -1,0 +1,4 @@
+arrivalLambda, serviceLambdaavgTurnaround, throughput, cpu util, avg rq
+10,0.04,0.0448284,9.63679,0.303922,0.0784314arrivalLambda, serviceLambdaavgTurnaround, throughput, cpu util, avg rq
+10,0.04,0.0647417,10.2041,0.28866,0.319588arrivalLambda, serviceLambdaavgTurnaround, throughput, cpu util, avg rq
+10,0.04,0.0824239,9.52381,0.423077,0.365385

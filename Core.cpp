@@ -13,5 +13,5 @@ Core::Core() {
     complete = false;
     processes_empty = false;
     events_empty = false;
-    Process* pollProcess = new Process(-1,0,0);
+    pollProcess = new Process(-1,0,0);
 };
