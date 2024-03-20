@@ -9,6 +9,6 @@
 3. Single run output will result in console.
 4. Note: The following writes to "cmh171_log.txt" in the current directory
 	For multiple runs, call multirun.sh ($ > ./multirun.sh)
-
+5. Report .pdf in folder
 
 
