@@ -1,0 +1,8 @@
+*
+.vscode/
+
+!.gitignore
+!*.cpp
+!*.h
+!*.ps1
+!*.sh
