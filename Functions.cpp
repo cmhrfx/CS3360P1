@@ -3,7 +3,7 @@
 int argChecks(int argc, char* argv[])
 {
     int flag = 0;
-    if (argc != 3)
+    if (argc > 4 || argc < 3)
     {
         // incorrect number of arguments
         flag = 1;
@@ -125,4 +125,21 @@ void outputMetrics(float arrivalRate, float serviceTime)
     cout << "| Average RQ Length  | " << setw(15) << avg_rq << " |\n";
     cout << "-----------------------------------------\n";
 
+}
+
+void logMetrics(float arrivalRate, float serviceTime, string path)
+{
+    cout << "log path: " << path << endl;
+    std::ofstream outFile(path, std::ios::app);
+    if (!outFile) {
+        std::cerr << "Error opening log file path." << std::endl;
+    }
+    else
+    {
+        outFile << arrivalRate << "," << serviceTime << "," << (core.turnarounds / LENGTH)
+        << "," << (LENGTH / core.time_piece) << "," << (core.cpu_active_count / core.sample_polls)
+        << "," << (core.sample_queue / core.sample_polls) << endl;
+        outFile.close();
+        cout << "Results written to logs" << endl;
+    }
 }

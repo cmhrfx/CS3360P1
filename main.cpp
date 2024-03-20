@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     float serviceTime = std::stof(argv[2]);
 
     // output stream for key result information
-    std::ofstream outFileResults("results.txt", std::ios::app);
+    
 
     // instantiate process list with user arguments, then assign to global struct
     ProcessList processes(arrivalRate, serviceTime);
@@ -81,17 +81,11 @@ int main(int argc, char *argv[])
         
     }
 
-    // output results in csv format
-    if (outFileResults.is_open())
-    {
-        outFileResults << arrivalRate << "," << serviceTime << "," << (core.turnarounds / LENGTH)
-        << "," << (LENGTH / core.time_piece) << "," << (core.cpu_active_count / core.sample_polls)
-        << "," << (core.sample_queue / core.sample_polls) << endl;
-        outFileResults.close();
-    }
-
     outputMetrics(arrivalRate, serviceTime);
-
+    if (argc == 4)
+    {
+        logMetrics(arrivalRate, serviceTime, argv[3]);
+    }
 
     return 0;
 }
