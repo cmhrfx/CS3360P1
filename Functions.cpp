@@ -1,5 +1,12 @@
 #include "Functions.h"
 
+
+// argChecks() checks that the necessary cmdline input
+// meets specifications.
+// argv[0] = program name
+// argv[1] = Arrival Rate float
+// argv[2] = Service Time float
+// argv[3] = Logging output path
 int argChecks(int argc, char* argv[])
 {
     int flag = 0;
@@ -29,6 +36,7 @@ int argChecks(int argc, char* argv[])
     return flag;
 }
 
+// function for console output from bad cmdline args
 void argChecktoConsole(int flag)
 {
     if (flag == 1)
@@ -39,36 +47,55 @@ void argChecktoConsole(int flag)
         {cout << "Argument out of range. Please try again.\n";}
 }
 
+// handleArrival() is a core function of the Discrete Time Event Simulator engine.
+// Called when current Event is an arrival.
+// Based on the cpu_status, one of two paths will be taken:
+// if cpu_status is 0, the new arrival event is converted immediately into a new 
+// departure event. cpu_status is also flipped to 1. 
+// if cpu_status is 1, the new arrival event is converted into a process placed
+// in the ready queue.
+// In both cases, the next arrival event is created from the ProcessList and added
+// to the event queue. 
 void handleArrival(Event* event)
 {
-    Event* newArrival = new Event();
-    Event* newDeparture = new Event();
     core.arrivals++;
 
+    // Path 1- idle CPU
     if (core.cpu_status == 0)
     {
         core.cpu_status = 1;
         float interval = event->process->serviceTime + core.time_piece;
-        newDeparture = new Event(event->process, interval, "departure");
+        Event* newDeparture = new Event(event->process, interval, "departure");
         core.eq.scheduleEvent(newDeparture);
     }
+    // Path 2- busy CPU
     else
     {
         core.rq.addProcess(event->process);
     }
 
+    // Both paths end in the creation of a new arrival event from ProcessList
     Process* nextProcess = core.processes.popProcess();
+    // Check that ProcessList isn't empty
     if (nextProcess == nullptr)
     {
         core.processes_empty = true;
     }
     else
     {
-        newArrival = new Event(nextProcess, nextProcess->arrivalTime, "arrival");
+        Event* newArrival = new Event(nextProcess, nextProcess->arrivalTime, "arrival");
         core.eq.scheduleEvent(newArrival);
     }
 
 }
+
+
+// handleDeparture() is a core function of the Discrete Time Event Simulator engine.
+// Called when the current event is a departure. 
+// Based on the ready_queue, one of two paths will be taken.
+// If ready_queue is empty, cpu_status is set to 0. 
+// If ready_queue contains a process, it is popped and a new departure event 
+// is made of that process.
 
 void handleDeparture(Event* event)
 {
@@ -88,6 +115,11 @@ void handleDeparture(Event* event)
 
 }
 
+// handlePoll() is key to quantifying metrics of the DTES.
+// Upon instantiation, the Event Queue contains a first instance of a poll event.
+// When this first instance is processed, handlePoll then schedules a following
+// poll event. This process repeats until the Process Queue is empty.
+// Variables under the global "core" struct are used to track these metrics.
 void handlePoll(Event* event)
 {
     if (!core.processes_empty)
@@ -106,6 +138,9 @@ void handlePoll(Event* event)
 
 }
 
+
+// outputMetrics() is used to compose console output of performance metrics
+// post-loop-completion.
 void outputMetrics(float arrivalRate, float serviceTime)
 {
     float avg_turnaround = core.turnarounds / LENGTH;
@@ -127,6 +162,9 @@ void outputMetrics(float arrivalRate, float serviceTime)
 
 }
 
+// logMetrics() is used to output performance metrics to an external log file.
+// In main, 'string path' is taken from cmdline args (argv[3]).
+// Output of logmetrics is in .csv format. 
 void logMetrics(float arrivalRate, float serviceTime, string path)
 {
     cout << "log path: " << path << endl;

@@ -24,7 +24,7 @@ and Event Queues are empty.
 #include "main.h"
 // GLOBALS
 Core core;                                      // struct for global variables
-float const LENGTH = 10000;                     
+const int LENGTH = 10000;                       // number of processes to generate                   
 
 int main(int argc, char *argv[])
 {
@@ -81,6 +81,7 @@ int main(int argc, char *argv[])
         
     }
 
+    // performance metrics output functions
     outputMetrics(arrivalRate, serviceTime);
     if (argc == 4)
     {

@@ -29,7 +29,7 @@ void ProcessList::populateList(float arrivalRate, float serviceTime)
 {
     float generationTime = 0;
     srand(time(0));
-    for (int i = 0; i < LENGTH; i++)
+    for (int i = 0; i < core.LENGTH; i++)
     {
         float interArrivalTime = genExponentialRandom(arrivalRate);
         generationTime += interArrivalTime;
@@ -56,14 +56,8 @@ void ProcessList::listToConsole()
     }
 }
 
-ProcessList::~ProcessList()
-{
-    for (Process* process : processes) {
-        delete process;
-    }
-    processes.clear();
-}
-
+// popProcess() cleanly returns the front element of a ProcessList and 
+// then removes it from that list. 
 Process* ProcessList::popProcess()
 {
     Process* process = nullptr;
@@ -75,7 +69,19 @@ Process* ProcessList::popProcess()
     return process;
 }
 
+// Return if the process list is empty 
+// originally made when 'processes' property was private
 bool ProcessList::isEmpty()
 {
     return processes.empty();
 }
+
+// Default Destructor
+ProcessList::~ProcessList()
+{
+    for (Process* process : processes) {
+        delete process;
+    }
+    processes.clear();
+}
+

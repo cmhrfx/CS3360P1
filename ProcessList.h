@@ -11,7 +11,7 @@
 #include <iostream>
 #include <iomanip>
 
-extern const float LENGTH;
+extern Core core;
 
 class ProcessList{
 public:
@@ -19,12 +19,12 @@ public:
     
     ProcessList(float arrivalRate, float serviceTime);
     ProcessList();
-    ~ProcessList();
     void listToConsole();
     Process* popProcess();
     bool isEmpty();
     void populateList(float arrivalRate, float serviceTime);
     float genExponentialRandom(float lambda);
+    ~ProcessList();
 
     
 };
