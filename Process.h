@@ -6,10 +6,6 @@
 class Process{
 public:
     Process(int id, float arrivalTime, float serviceTime);
-    int getId() const;
-    float getArrivalTime() const;
-    float getServiceTime() const;
-
     int id;
     float arrivalTime;
     float serviceTime;

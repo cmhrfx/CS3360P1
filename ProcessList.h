@@ -15,15 +15,17 @@ extern const float LENGTH;
 
 class ProcessList{
 public:
-    ProcessList(float arrivalLambda, float serviceLambda);
+    std::list<Process*> processes;
+    
+    ProcessList(float arrivalRate, float serviceTime);
     ProcessList();
     ~ProcessList();
     void listToConsole();
-    Process* getProcess();
+    Process* popProcess();
     bool isEmpty();
-    std::list<Process*> processes;
-    void populateList(float arrivalLambda, float serviceLambda);
+    void populateList(float arrivalRate, float serviceTime);
     float genExponentialRandom(float lambda);
 
+    
 };
 #endif

@@ -6,19 +6,3 @@ Process::Process(int id, float arrivalTime, float serviceTime)
     this->arrivalTime = arrivalTime;
     this->serviceTime = serviceTime;
 };
-
-int Process::getId() const
-{
-    return id;
-}
-
-float Process::getArrivalTime() const
-{
-    return arrivalTime;
-}
-
-float Process::getServiceTime() const
-{
-    return serviceTime;
-}
-

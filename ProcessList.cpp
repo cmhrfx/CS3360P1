@@ -1,9 +1,9 @@
 #include "ProcessList.h"
 
 // populate processList on instantiation
-ProcessList::ProcessList(float arrivalLambda, float serviceLambda)
+ProcessList::ProcessList(float arrivalRate, float serviceTime)
 {
-    populateList(arrivalLambda, serviceLambda);
+    populateList(arrivalRate, serviceTime);
 }
 
 ProcessList::ProcessList()
@@ -25,15 +25,15 @@ float ProcessList::genExponentialRandom(float lambda)
 // populate the ProcessList with proceses
 // use genExponentialRandom with different lambdas to instantiate a process
 // then push that processes onto the list. Repeat for length required.
-void ProcessList::populateList(float arrivalLambda, float serviceLambda)
+void ProcessList::populateList(float arrivalRate, float serviceTime)
 {
     float generationTime = 0;
     srand(time(0));
     for (int i = 0; i < LENGTH; i++)
     {
-        float interArrivalTime = genExponentialRandom(arrivalLambda);
+        float interArrivalTime = genExponentialRandom(arrivalRate);
         generationTime += interArrivalTime;
-        Process* newProcess = new Process(i + 1, generationTime, genExponentialRandom(1/serviceLambda));
+        Process* newProcess = new Process(i + 1, generationTime, genExponentialRandom(1/serviceTime));
         processes.push_back(newProcess);
     }
 }
@@ -49,30 +49,29 @@ void ProcessList::listToConsole()
 
     for (const auto& process : processes)
     {
-        std::cout << std::left << std::setw(12) << process->getId()
-                  << std::setw(15) << process->getArrivalTime()
-                  << std::setw(15) << process->getServiceTime()
+        std::cout << std::left << std::setw(12) << process->id
+                  << std::setw(15) << process->arrivalTime
+                  << std::setw(15) << process->serviceTime
                   << std::endl;
     }
 }
 
 ProcessList::~ProcessList()
 {
-
+    for (Process* process : processes) {
+        delete process;
+    }
+    processes.clear();
 }
 
-Process* ProcessList::getProcess()
+Process* ProcessList::popProcess()
 {
     Process* process = nullptr;
-    if (processes.empty())
+    if (!processes.empty())
     {
-        std::cout << "No more processes" << std::endl;
-    }
-    else {
         process = processes.front();
         processes.pop_front();
     }
-
     return process;
 }
 

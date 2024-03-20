@@ -24,13 +24,13 @@ Event* EventQueue::getEvent()
 
 void EventQueue::scheduleEvent(Event* newEvent)
 {
-    if (events.empty() || newEvent->getEventTime() < events.front()->time)
+    if (events.empty() || newEvent->time < events.front()->time)
     {
         events.push_front(newEvent);
     } else {
         std::list<Event*>::iterator it = events.begin();
 
-        while (it != events.end() && newEvent->getEventTime() >= (*it)->time)
+        while (it != events.end() && newEvent->time >= (*it)->time)
         {
             ++it;
         }

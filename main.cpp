@@ -12,30 +12,29 @@ The program takes two arguments at the command line: average arrival time
 and average service time. The average arrival time denotes a Poisson
 distribution and the average service time denotes an Exponential distribution.
 
-A list of processes of length 10,000 will be instantiated. That list will 
-then be checked every clock tick to see if a new process should be introduced
-to the Ready Queue. 
+A list of processes of length 10,000 will be instantiated and processed into
+an Event Queue. Three possible events exist: arrival, departure, and poll.
 
-Furthermore, each clock tick will be used to determine if an event in the
-Ready Queue should be introduced to the Event Queue.
+The Event Queue is instantiated with an initial arrival "base case" to start
+the loop. Each time an arrival event is handled, a new arrival event is pulled
+from the Process List. This process continues until both the Process List
+and Event Queues are empty. 
 */
 
 #include "main.h"
 // GLOBALS
-Core core;                                    // struct for global variables
-bool const DEBUG = true;                      // turn on debugging output
-float const LENGTH = 100;
+Core core;                                      // struct for global variables
+float const LENGTH = 10000;                     
 
 int main(int argc, char *argv[])
 {
+
     // It's generally not good practice to place a separate return statement, but
     // I believe this is acceptable when we're doing an early arg check.
     // This way, I don't need to nest the entire driver logic under 
     // "if (argFailure != 0)"
 
-    /*
     int flag = argChecks(argc, argv);   // check for correct number of args
-
     if (flag > 0)
     {
         return 1;                   // Ends program early if a bad argument occurred.
@@ -45,71 +44,54 @@ int main(int argc, char *argv[])
     // Okay moving on to main driver logic
 
     // Pull out cmdline arguments and capture them as variables
-    float arrivalLambda = std::stof(argv[1]);
-    float serviceLambda = std::stof(argv[2]);
+    float arrivalRate = std::stof(argv[1]);
+    float serviceTime = std::stof(argv[2]);
 
-    */
+    // output stream for key result information
     std::ofstream outFileResults("results.txt", std::ios::app);
 
-    // instantiate all processes into a list
-    float arrivalLambda = 10;
-    float serviceLambda = 0.04;
-    ProcessList processes(arrivalLambda, serviceLambda);
-    core.processes = processes;    
-    core.processes.listToConsole();
+    // instantiate process list with user arguments, then assign to global struct
+    ProcessList processes(arrivalRate, serviceTime);
+    core.processes = processes;
 
+    // Core function loop
     while (!core.events_empty)
     {
-        // FKA "tick"
-        Event* event = core.eq.getEvent();
-        if (event == nullptr)
+        // Evaluate if EventQueue is empty
+        if (core.eq.events.empty())
         {
             core.events_empty = true;
         }
+                
         else {
-            core.time_piece = event->getEventTime();
+            // Pop the event from front of EventQueue and set time to event
+            Event* event = core.eq.getEvent();
+            core.time_piece = event->time;
 
-            if (DEBUG)
-            {
-                cout << "Beginning tick" << endl;
-                cout << "Event ProcessID: " << event->process->id << endl;
-                cout << "Event Time: " << event->time << endl;
-                cout << "Event Type: " << event->type << endl;
-                cout << "Event Process Arrival Time: " << event->process->arrivalTime << endl;
-                cout << "Event Process Service Time: " << event->process->serviceTime << endl;
-            }
-
-            if (event->getEventType() == "arrival")
+            // switch logic based on event type
+            if (event->type == "arrival")
                 {handleArrival(event);}
                 
-            else if (event->getEventType() == "departure")
+            else if (event->type == "departure")
                 {handleDeparture(event);}
                 
-            else if (event->getEventType() == "poll")
+            else if (event->type == "poll")
                 {handlePoll(event);}
         }
         
     }
-    
-    // post loop stats
-    cout << "Number of polls: " << core.sample_polls << endl;
-    cout << "Number of arrivals: " << core.arrivals - 1 << endl;
-    cout << "Number of departures: " << core.departures - 1 << endl;
-    cout << "Average queue length: " << core.sample_queue / core.sample_polls << endl;
-    cout << "Average turnaround time: " << core.turnarounds / LENGTH << endl;
-    cout << "CPU Utilization: " << core.cpu_active_count / core.sample_polls << endl;
-    cout << "Average Throughput: " << LENGTH / core.time_piece << endl;
 
+    // output results in csv format
     if (outFileResults.is_open())
     {
-        outFileResults << "arrivalLambda, serviceLambda"
-        << "avgTurnaround, throughput, cpu util, avg rq" << endl;
-        
-        outFileResults << arrivalLambda << "," << serviceLambda << "," << (core.turnarounds / LENGTH)
+        outFileResults << "\n" << arrivalRate << "," << serviceTime << "," << (core.turnarounds / LENGTH)
         << "," << (LENGTH / core.time_piece) << "," << (core.cpu_active_count / core.sample_polls)
         << "," << (core.sample_queue / core.sample_polls);
         outFileResults.close();
     }
+
+    outputMetrics(arrivalRate, serviceTime);
+
 
     return 0;
 }

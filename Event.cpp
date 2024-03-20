@@ -13,33 +13,3 @@ Event::Event()
     this->time = 0;
     this->type = "";
 }
-
-Process* Event::getEventProcess()
-{
-    return process;
-}
-
-float Event::getEventTime() const
-{
-    return time;
-}
-
-string Event::getEventType() const
-{
-    return type;
-}
-
-int Event::getEventProcessId() const
-{
-    return process->getId();
-}
-
-float Event::getEventProcessAT() const
-{
-    return process->getArrivalTime();
-}
-
-float Event::getEventProcessST() const
-{
-    return process->getServiceTime();
-}
