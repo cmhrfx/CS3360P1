@@ -11,10 +11,7 @@ public:
     EventQueue();
     ~EventQueue();
     Event* getEvent();
-    void scheduleEvent(Event* newEvent, Event* oldEvent);
     void scheduleEvent(Event* newEvent);
-
-private:
     std::list<Event*> events;
 };
 

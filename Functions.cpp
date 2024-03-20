@@ -1,5 +1,7 @@
 #include "Functions.h"
 
+Process* pollProcess = new Process(-1,0,0);
+
 int argChecks(int argc, char* argv[])
 {
     if (DEBUG)
@@ -55,27 +57,20 @@ void argChecktoConsole(int flag)
 
 void handleArrival(Event* event)
 {
-    if (DEBUG)
-    {
-        cout << "Running handle_arrival" << endl;
-    }
-
     Event* newArrival = new Event();
     Event* newDeparture = new Event();
-
     core.arrivals++;
-    Process* currentProcess = event->getEventProcess();
 
     if (core.cpu_status == 0)
     {
         core.cpu_status = 1;
-        float interval = currentProcess->getServiceTime() + core.time_piece;
-        newDeparture = new Event(currentProcess, interval, "departure");
-        core.eq.scheduleEvent(newDeparture, event);
+        float interval = event->getEventProcessST() + core.time_piece;
+        newDeparture = new Event(event->process, interval, "departure");
+        core.eq.scheduleEvent(newDeparture);
     }
     else
     {
-        core.rq.addProcess(currentProcess);
+        core.rq.addProcess(event->process);
     }
 
     Process* nextProcess = core.processes.getProcess();
@@ -83,25 +78,16 @@ void handleArrival(Event* event)
     {
         core.processes_empty = true;
     }
-    else 
+    else
     {
-        newArrival = new Event(nextProcess, nextProcess->getArrivalTime(), "arrival");
-        core.eq.scheduleEvent(newArrival, newDeparture);
+        newArrival = new Event(nextProcess, nextProcess->arrivalTime, "arrival");
+        core.eq.scheduleEvent(newArrival);
     }
-    schedulePoll();
 
-    if (DEBUG)
-    {
-        cout << "Completed handle_arrival" << endl;
-    }
 }
 
-void handleDeparture (Event* event)
+void handleDeparture(Event* event)
 {
-    if (DEBUG)
-    {
-        cout << "Running handle_departure" << endl;
-    }
     core.departures++;
     if (core.rq.isEmpty())
     {
@@ -110,41 +96,18 @@ void handleDeparture (Event* event)
     else
     {
         Process* currentProcess = core.rq.popFront();
-        float interval = currentProcess->getServiceTime() + core.time_piece;
+        float interval = currentProcess->serviceTime + core.time_piece;
         Event* newDeparture = new Event(currentProcess, interval, "departure");
         core.eq.scheduleEvent(newDeparture);
     }
 
-    if (DEBUG)
-    {
-        cout << "Completed handle_departure" << endl;
-    }
 }
 
-void handlePoll (Event* event)
+void handlePoll(Event* event)
 {
-    if (DEBUG)
-    {
-        cout << "Running handle_poll" << endl;
-    }
-
-    core.poll_period++;
-
-    if(core.poll_period%5 == 1)
-    {
-        core.sample_queue += core.rq.size();
-        core.sample_polls++;
-    }
-
-    if (DEBUG)
-    {
-        cout << "Completed handle_poll" << endl;
-    }
-}
-
-void schedulePoll()
-{
-    Process* pollProcess = new Process(-1, 0, 0);
-    Event* newPoll = new Event(pollProcess, 0, "poll");
-    core.eq.scheduleEvent(newPoll);
+    core.sample_queue += core.rq.size();
+    core.sample_polls++;
+    Event* nextPoll = new Event(core.pollProcess, 
+                core.time_piece + core.polling_interval, "poll");
+    core.eq.scheduleEvent(nextPoll);
 }

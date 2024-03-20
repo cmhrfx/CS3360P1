@@ -1,17 +1,17 @@
 #include "Core.h"
 
 Core::Core() {
-    float time_piece = 0;       // global clock
-    int cpu_status = 0;           // 0 = not busy, 1 = busy
-    float sample_queue = 0;         // x += number of processes in rq
-    float sample_polls = 0;         // track number of polls
-    int arrivals = 0;              
-    int departures = 0;
-    int poll_period = 0;
-    bool complete = false;
-    bool processes_empty = false;
-    bool events_empty = false;
-    ReadyQueue rq;      // instantiated as empty
-    EventQueue eq;      // instantiated with 1 initial departure event
-    ProcessList processes;
+    time_piece = 0;       // global clock
+    cpu_status = 0;           // 0 = not busy, 1 = busy
+    sample_queue = 0;         // x += number of processes in rq
+    sample_polls = 0;         // track number of polls
+    turnarounds = 0;
+    cpu_active_count = 0;
+    polling_interval = 0.1;
+    arrivals = 0;              
+    departures = 0;
+    complete = false;
+    processes_empty = false;
+    events_empty = false;
+    Process* pollProcess = new Process(-1,0,0);
 };

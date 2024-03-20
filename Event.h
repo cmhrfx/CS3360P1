@@ -19,9 +19,7 @@ public:
     int getEventProcessId() const;
     float getEventProcessAT() const;
     float getEventProcessST() const;
-
-
-private:
+    
     Process* process;
     float time;
     string type;

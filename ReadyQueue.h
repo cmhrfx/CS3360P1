@@ -11,8 +11,6 @@ public:
     Process* popFront();
     bool isEmpty();
     int size();
-    
-private:
     std::list<Process*> queue;
 };
 

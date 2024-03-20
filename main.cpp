@@ -23,8 +23,8 @@ Ready Queue should be introduced to the Event Queue.
 #include "main.h"
 // GLOBALS
 Core core;                                    // struct for global variables
-bool const DEBUG = false;                      // turn on debugging output
-int const LENGTH = 10000;
+bool const DEBUG = true;                      // turn on debugging output
+int const LENGTH = 100;
 
 int main(int argc, char *argv[])
 {
@@ -68,14 +68,14 @@ int main(int argc, char *argv[])
         else {
             core.time_piece = event->getEventTime();
 
-            if (DEBUG && event->getEventType() != "poll")
+            if (DEBUG)
             {
                 cout << "Beginning tick" << endl;
-                cout << "Event ProcessID: " << event->getEventProcessId() << endl;
-                cout << "Event Time: " << event->getEventTime() << endl;
-                cout << "Event Type: " << event->getEventType() << endl;
-                cout << "Event Process Arrival Time: " << event->getEventProcessAT() << endl;
-                cout << "Event Process Service Time: " << event->getEventProcessST() << endl;
+                cout << "Event ProcessID: " << event->process->id << endl;
+                cout << "Event Time: " << event->time << endl;
+                cout << "Event Type: " << event->type << endl;
+                cout << "Event Process Arrival Time: " << event->process->arrivalTime << endl;
+                cout << "Event Process Service Time: " << event->process->serviceTime << endl;
             }
 
             if (event->getEventType() == "arrival")
@@ -88,23 +88,15 @@ int main(int argc, char *argv[])
                 {handlePoll(event);}
         }
         
-
-    /*
-        if (DEBUG)
-        {
-            cout << "Event Process Id: " << event->getEventProcessId() << endl;
-            cout << "Event Time: " << event->getEventTime() << endl;
-            cout << "Event Type: " << event->getEventType() << endl;
-            cout << "Ending tick" << endl;
-        }
-    */
     }
     
     // post loop stats
     cout << "Number of polls: " << core.sample_polls << endl;
-    cout << "Number of arrivals: " << core.arrivals - 1<< endl;
+    cout << "Number of arrivals: " << core.arrivals - 1 << endl;
     cout << "Number of departures: " << core.departures - 1 << endl;
     cout << "Average queue length: " << core.sample_queue / core.sample_polls << endl;
+    cout << "Average turnaround time: " << core.turnarounds / LENGTH << endl;
+    cout << "CPU Utilization: " << core.cpu_active_count / core.sample_polls << endl;
 
     return 0;
 }

@@ -10,7 +10,6 @@ public:
     float getArrivalTime() const;
     float getServiceTime() const;
 
-private:
     int id;
     float arrivalTime;
     float serviceTime;

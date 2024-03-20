@@ -21,8 +21,6 @@ public:
     void listToConsole();
     Process* getProcess();
     bool isEmpty();
-
-private:
     std::list<Process*> processes;
     void populateList(float arrivalLambda, float serviceLambda);
     float genExponentialRandom(float lambda);
