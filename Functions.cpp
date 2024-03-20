@@ -1,7 +1,5 @@
 #include "Functions.h"
 
-Process* pollProcess = new Process(-1,0,0);
-
 int argChecks(int argc, char* argv[])
 {
     int flag = 0;
